@@ -1,0 +1,169 @@
+{
+  "version": "iwsdk.scene.v1",
+  "units": "meters",
+  "components": {
+    "com.iwsdk.components.IBLGradient": {
+      "sky": [0.96, 0.94, 0.9, 1],
+      "equator": [0.8, 0.76, 0.7, 1],
+      "ground": [0.46, 0.42, 0.38, 1],
+      "intensity": 0.6
+    }
+  },
+  "environment": {
+    "toneMapping": "aces",
+    "exposure": 1,
+    "shadows": true,
+    "shadowMapType": "pcf"
+  },
+  "resources": {},
+  "nodes": [
+    {
+      "id": "evidence-box",
+      "name": "Evidence Box",
+      "content": {
+        "type": "asset",
+        "asset": "evidence-box",
+        "castShadow": true,
+        "receiveShadow": true
+      },
+      "transform": {
+        "position": [0, 0.72, -0.42]
+      },
+      "components": {
+        "EvidenceBox": {
+          "placedOnTable": false
+        }
+      },
+      "children": [
+        {
+          "id": "evidence-box-contact",
+          "name": "Contact Shadow",
+          "transform": {
+            "position": [0, 0.001, 0]
+          },
+          "components": {
+            "ContactShadow": {
+              "size": [0.44, 0.32],
+              "opacity": 0.35,
+              "color": [0, 0, 0, 1],
+              "height": 0.0005
+            }
+          }
+        },
+        {
+          "id": "card-e1",
+          "name": "E1 Patrol Card",
+          "content": { "type": "asset", "asset": "card-e1", "receiveShadow": true },
+          "transform": { "position": [-0.105, 0.0145, -0.04], "rotationDeg": [0, 5, 0] },
+          "components": {
+            "OneHandGrabbable": {},
+            "Evidence": { "evidenceId": "E1", "label": "Guard's patrol card" }
+          }
+        },
+        {
+          "id": "card-e2",
+          "name": "E2 Key Log",
+          "content": { "type": "asset", "asset": "card-e2", "receiveShadow": true },
+          "transform": { "position": [0, 0.0145, -0.045], "rotationDeg": [0, -3, 0] },
+          "components": {
+            "OneHandGrabbable": {},
+            "Evidence": { "evidenceId": "E2", "label": "Key log book" }
+          }
+        },
+        {
+          "id": "card-e3",
+          "name": "E3 Ticket Stub",
+          "content": { "type": "asset", "asset": "card-e3", "receiveShadow": true },
+          "transform": { "position": [0.105, 0.0145, -0.04], "rotationDeg": [0, 4, 0] },
+          "components": {
+            "OneHandGrabbable": {},
+            "Evidence": { "evidenceId": "E3", "label": "Torn ticket stub" }
+          }
+        },
+        {
+          "id": "card-e4",
+          "name": "E4 Ticket Wallet",
+          "content": { "type": "asset", "asset": "card-e4", "receiveShadow": true },
+          "transform": { "position": [-0.04, 0.0195, 0.05], "rotationDeg": [0, 3, 0] },
+          "components": {
+            "OneHandGrabbable": {},
+            "Evidence": { "evidenceId": "E4", "label": "Iris's ticket wallet" }
+          }
+        },
+        {
+          "id": "card-e5",
+          "name": "E5 Parking Receipt",
+          "content": { "type": "asset", "asset": "card-e5", "receiveShadow": true },
+          "transform": { "position": [0.04, 0.0195, 0.045], "rotationDeg": [0, -2, 0] },
+          "components": {
+            "OneHandGrabbable": {},
+            "Evidence": { "evidenceId": "E5", "label": "Parking receipt" }
+          }
+        },
+        {
+          "id": "card-e6",
+          "name": "E6 Corridor Photo",
+          "content": { "type": "asset", "asset": "card-e6", "receiveShadow": true },
+          "transform": { "position": [-0.115, 0.0195, 0.045], "rotationDeg": [0, -6, 0] },
+          "components": {
+            "OneHandGrabbable": {},
+            "Evidence": { "evidenceId": "E6", "label": "Corridor photo" }
+          }
+        },
+        {
+          "id": "card-e7",
+          "name": "E7 Office Shoes",
+          "content": { "type": "asset", "asset": "card-e7", "receiveShadow": true },
+          "transform": { "position": [0.115, 0.0195, 0.05], "rotationDeg": [0, 6, 0] },
+          "components": {
+            "OneHandGrabbable": {},
+            "Evidence": { "evidenceId": "E7", "label": "Office shoes" }
+          }
+        },
+        {
+          "id": "card-brief",
+          "name": "Case Brief",
+          "content": { "type": "asset", "asset": "card-brief", "receiveShadow": true },
+          "transform": { "position": [0, 0.0245, 0] },
+          "components": {
+            "OneHandGrabbable": {},
+            "Evidence": { "evidenceId": "BRIEF", "label": "Case brief" }
+          }
+        },
+        {
+          "id": "suspect-ben",
+          "name": "Suspect Ben Oduya",
+          "content": { "type": "asset", "asset": "card-suspect", "receiveShadow": true },
+          "transform": { "position": [-0.1, 0.108, -0.13], "rotationDeg": [75, 0, 0] },
+          "components": {
+            "OneHandGrabbable": {},
+            "Suspect": { "suspectId": "BEN", "name": "Ben Oduya" }
+          }
+        },
+        {
+          "id": "suspect-iris",
+          "name": "Suspect Iris Tan",
+          "content": { "type": "asset", "asset": "card-suspect", "receiveShadow": true },
+          "transform": { "position": [0, 0.108, -0.13], "rotationDeg": [75, 0, 0] },
+          "components": {
+            "OneHandGrabbable": {},
+            "Suspect": { "suspectId": "IRIS", "name": "Iris Tan" }
+          }
+        },
+        {
+          "id": "suspect-mara",
+          "name": "Suspect Mara Quell",
+          "content": { "type": "asset", "asset": "card-suspect", "receiveShadow": true },
+          "transform": { "position": [0.1, 0.108, -0.13], "rotationDeg": [75, 0, 0] },
+          "components": {
+            "OneHandGrabbable": {},
+            "Suspect": { "suspectId": "MARA", "name": "Mara Quell" }
+          }
+        }
+      ]
+    }
+  ],
+  "authoring": {
+    "views": []
+  }
+}
