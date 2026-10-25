@@ -12,12 +12,14 @@ Developer Competition 2026 (Gaming, New Experience).
 ## The cases
 
 Each case is three suspects and seven pieces of evidence, and every case uses
-all three inspections at least once.
+all three inspections at least once. The table shows today's case: the seven
+take turns, one a day by your local date. Add `?case=01` to `?case=07` to the
+address to play a particular one.
 
-- **Case 01, The Empty Case** (default): a jade hairpin gone from a locked
+- **Case 01, The Empty Case** — `?case=01`: a jade hairpin gone from a locked
   display case in a small private museum.
-- **Case 02, The Anonymous Letter** — add `?case=02` to the address: a typed
-  threat in a choir director's pigeonhole.
+- **Case 02, The Anonymous Letter** — `?case=02`: a typed threat in a choir
+  director's pigeonhole.
 - **Case 03, The Salted Sponge** — `?case=03`: the favourite's cake at a village
   show tastes of salt.
 - **Case 04, The Signed First Edition** — `?case=04`: a collector's prized
@@ -44,6 +46,10 @@ all three inspections at least once.
 
 Cards whose secret you have found keep a gold edge.
 
+**Your detective notebook** is on the back of the brief card: which of the
+seven cases you have solved, and your streak of days in a row with a solve.
+Solving a case adds it to the notebook and shows both on the verdict.
+
 ## How it works
 
 Built with [IWSDK](https://iwsdk.dev) (Three.js with an entity component
@@ -66,6 +72,11 @@ system) as a WebXR app.
   case against the slots the scene provides: all three inspections present,
   linked cards that do not start side by side, exactly one culprit, and text
   that fits the tags.
+- **Today's case and the notebook** (`src/notebook.ts`). The day's case comes
+  from the local calendar date; solved cases and the days you solved on are
+  kept in the browser's local storage, and the box carries the counts as ECS
+  state. `npm run check:notebook` checks the date rotation, the streak and
+  saving, including when storage is blocked.
 
 ```sh
 npm install
@@ -81,7 +92,8 @@ tested on a headset.
 
 ## Privacy
 
-No accounts, no analytics, no cookies. Everything loads from this site,
+No accounts, no analytics, no cookies. The notebook stays in your browser's
+local storage and is never sent anywhere. Everything loads from this site,
 including the hand and controller models (the input layer normally fetches
 them from a public CDN; `src/local-input-profiles.ts` points it here), so
 playing sends nothing to a third party.

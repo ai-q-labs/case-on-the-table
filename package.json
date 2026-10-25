@@ -12,6 +12,7 @@
     "reference:warmup": "iwsdk reference warmup",
     "typecheck": "tsc --noEmit",
     "check:cases": "node scripts/check-cases.ts",
+    "check:notebook": "node scripts/check-notebook.ts",
     "build": "vite build",
     "preview": "vite preview"
   },

@@ -9,6 +9,10 @@ export const EvidenceBox = createComponent('EvidenceBox', {
   solved: { type: Types.Boolean, default: false },
   /** Photos of innocent suspects put in the tray before solving. */
   wrongGuesses: { type: Types.Int8, default: 0 },
+  /** Cases this browser's notebook has solved, this one included once solved. */
+  notebookSolved: { type: Types.Int8, default: 0 },
+  /** Days in a row with a solve, from the notebook. */
+  streakDays: { type: Types.Int16, default: 0 },
 });
 
 /** One piece of evidence the player can pick up. */

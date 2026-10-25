@@ -379,6 +379,7 @@ export function drawVerdict(
   text: string,
   footer: string,
   solved: boolean,
+  note = '',
 ): void {
   const { width, height } = VERDICT_SIZE;
   canvas.width = width;
@@ -392,14 +393,27 @@ export function drawVerdict(
   ctx.lineWidth = 7;
   ctx.stroke();
   ctx.fillStyle = '#f7f1e3';
-  ctx.font = `650 33px ${FONT}`;
-  const rows = wrap(ctx, text, width - 70);
+  // With the notebook line there is room for three rows: shrink to fit them.
+  const maxRows = note === '' ? Infinity : 3;
+  let size = 33;
+  ctx.font = `650 ${size}px ${FONT}`;
+  let rows = wrap(ctx, text, width - 70);
+  while (rows.length > maxRows && size > 25) {
+    size -= 2;
+    ctx.font = `650 ${size}px ${FONT}`;
+    rows = wrap(ctx, text, width - 70);
+  }
   let y = 62;
   for (const row of rows) {
     ctx.fillText(row, 35, y);
-    y += 42;
+    y += Math.round(size * 1.27);
   }
   ctx.fillStyle = solved ? '#e3c25a' : '#c9beb0';
   ctx.font = `600 26px ${FONT}`;
   ctx.fillText(footer, 35, height - 32);
+  if (note !== '') {
+    // The notebook line, between the verdict and the clue count.
+    ctx.fillStyle = '#c9beb0';
+    ctx.fillText(note, 35, height - 70);
+  }
 }

@@ -8,9 +8,10 @@ import {
   SRGBColorSpace,
 } from '@iwsdk/core';
 import { drawBack, drawFace, drawHidden, drawSuspect, type FaceArt } from './card-art.js';
-import { activeCase } from './cases/index.js';
+import { activeCase, CASES } from './cases/index.js';
 import type { CardText } from './cases/types.js';
 import { Evidence, Suspect } from './case-components.js';
+import { browserStorage, dayKey, loadNotebook, solvedCount, streak } from './notebook.js';
 import {
   CARD_DEPTH,
   CARD_FACE_SCALE_X,
@@ -26,6 +27,23 @@ const BOTTOM = 3;
 // A suspect's back has no printing of its own: initials and a caption.
 const PLAIN_BACK: CardText = { title: '', lines: [], reveal: 'none' };
 
+/** The brief, with the detective notebook printed on its back. */
+function withNotebook(card: CardText): CardText {
+  const notebook = loadNotebook(browserStorage());
+  const ids = CASES.map((file) => file.id);
+  const days = streak(notebook.days, dayKey(new Date()));
+  return {
+    ...card,
+    hint: card.hint ?? 'Your detective notebook is on the back.',
+    back: [
+      'NOTEBOOK',
+      `Solved ${solvedCount(notebook, ids)} of ${ids.length}`,
+      ids.map((id) => `${id} ${notebook.solved[id] != null ? '✓' : '·'}`).join('   '),
+      `Streak: ${days} ${days === 1 ? 'day' : 'days'}`,
+    ],
+  };
+}
+
 function canvasTexture(canvas: HTMLCanvasElement): CanvasTexture {
   const texture = new CanvasTexture(canvas);
   texture.colorSpace = SRGBColorSpace;
@@ -37,7 +55,8 @@ function canvasTexture(canvas: HTMLCanvasElement): CanvasTexture {
  * Prints each card once it appears: the face on top of the pale layer, the
  * back under the coloured backing, and for a 'light' card a clear layer
  * holding the faded words (InspectionSystem fades it in). Suspect photo cards
- * get a portrait face and their initials on the back.
+ * get a portrait face and their initials on the back. The brief's back is the
+ * detective notebook: cases solved in this browser and the streak of days.
  *
  * Leaves on the card's object3D.userData:
  * - `rim`: the card's own backing material, which glows once a clue is found
@@ -60,11 +79,11 @@ export class CardFaceSystem extends createSystem({
 
   private print(entity: Entity): void {
     const id = entity.getValue(Evidence, 'evidenceId') as string;
-    const card = activeCase.cards[id];
     const root = entity.object3D;
-    if (card == null || root == null || root.userData.printed === true) {
+    if (activeCase.cards[id] == null || root == null || root.userData.printed === true) {
       return;
     }
+    const card = id === 'BRIEF' ? withNotebook(activeCase.cards[id]) : activeCase.cards[id];
     entity.setValue(Evidence, 'label', card.title);
     let art: FaceArt | undefined;
     this.dress(

@@ -13,8 +13,18 @@ import {
   Vector3,
 } from '@iwsdk/core';
 import { drawVerdict, VERDICT_SIZE } from './card-art.js';
-import { activeCase } from './cases/index.js';
+import { activeCase, CASES } from './cases/index.js';
 import { Evidence, EvidenceBox, Suspect } from './case-components.js';
+import {
+  browserStorage,
+  dayKey,
+  loadNotebook,
+  type Notebook,
+  recordSolve,
+  saveNotebook,
+  solvedCount,
+  streak,
+} from './notebook.js';
 
 // The inside of the tray, in the box's own space (origin at its bottom face).
 const TRAY_HALF_WIDTH = 0.18;
@@ -30,6 +40,10 @@ const GOLD = 0xc9a227;
  * - Anyone else: EvidenceBox.wrongGuesses goes up, a red tag says why they are
  *   innocent, and the photo goes back to its place on the rim to pick again.
  * Each photo remembers its place on the rim when it first appears.
+ *
+ * Solving also writes the case into the detective notebook (localStorage) and
+ * shows how many cases it holds and the streak of days with a solve; the box
+ * carries both numbers as EvidenceBox.notebookSolved and streakDays.
  */
 export class AccusationSystem extends createSystem({
   boxes: { required: [EvidenceBox] },
@@ -44,8 +58,12 @@ export class AccusationSystem extends createSystem({
   private verdict!: Mesh;
   private verdictCanvas!: HTMLCanvasElement;
   private verdictTexture!: CanvasTexture;
+  private notebook!: Notebook;
+  private notebookOnBox!: boolean;
 
   init(): void {
+    this.notebook = loadNotebook(browserStorage());
+    this.notebookOnBox = false;
     this.head = new Vector3();
     this.local = new Vector3();
     this.boxPos = new Vector3();
@@ -81,6 +99,10 @@ export class AccusationSystem extends createSystem({
     const boxObject = box?.object3D;
     if (box == null || boxObject == null) {
       return;
+    }
+    if (!this.notebookOnBox) {
+      this.notebookOnBox = true;
+      this.writeNotebookTo(box);
     }
     while (this.released.length > 0) {
       this.judge(this.released.pop() as Entity, box, boxObject);
@@ -133,10 +155,21 @@ export class AccusationSystem extends createSystem({
 
     if (suspect.culprit) {
       box.setValue(EvidenceBox, 'solved', true);
+      const clues = this.cluesFound();
+      const total = this.cluesTotal();
+      this.notebook = recordSolve(this.notebook, activeCase.id, {
+        date: dayKey(new Date()),
+        clues,
+        total,
+        wrong,
+      });
+      saveNotebook(browserStorage(), this.notebook);
+      const [solvedCases, days] = this.writeNotebookTo(box);
       this.show(
         suspect.verdict,
-        `Clues found ${this.cluesFound()} of ${this.cluesTotal()}  ·  Wrong guesses ${wrong}`,
+        `Clues found ${clues} of ${total}  ·  Wrong guesses ${wrong}`,
         true,
+        `Notebook ${solvedCases} of ${CASES.length} cases  ·  Streak ${days} ${days === 1 ? 'day' : 'days'}`,
       );
       const rim = object.userData.rim as MeshStandardMaterial | undefined;
       rim?.emissive.setHex(GOLD);
@@ -156,10 +189,22 @@ export class AccusationSystem extends createSystem({
     }
   }
 
-  private show(text: string, footer: string, solved: boolean): void {
-    drawVerdict(this.verdictCanvas, text, footer, solved);
+  private show(text: string, footer: string, solved: boolean, note = ''): void {
+    drawVerdict(this.verdictCanvas, text, footer, solved, note);
     this.verdictTexture.needsUpdate = true;
     this.verdict.visible = true;
+  }
+
+  /** Puts the notebook's numbers on the box; returns [cases solved, streak in days]. */
+  private writeNotebookTo(box: Entity): [number, number] {
+    const solvedCases = solvedCount(
+      this.notebook,
+      CASES.map((file) => file.id),
+    );
+    const days = streak(this.notebook.days, dayKey(new Date()));
+    box.setValue(EvidenceBox, 'notebookSolved', solvedCases);
+    box.setValue(EvidenceBox, 'streakDays', days);
+    return [solvedCases, days];
   }
 
   /** Clues a case hides: every flip or light card, and every link. */
