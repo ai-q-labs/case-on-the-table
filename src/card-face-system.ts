@@ -8,7 +8,8 @@ import {
   SRGBColorSpace,
 } from '@iwsdk/core';
 import { drawBack, drawFace, drawHidden, drawSuspect, type FaceArt } from './card-art.js';
-import { CARDS, type CardText, SUSPECTS } from './case01.js';
+import { activeCase } from './cases/index.js';
+import type { CardText } from './cases/types.js';
 import { Evidence, Suspect } from './case-components.js';
 import {
   CARD_DEPTH,
@@ -59,11 +60,12 @@ export class CardFaceSystem extends createSystem({
 
   private print(entity: Entity): void {
     const id = entity.getValue(Evidence, 'evidenceId') as string;
-    const card = CARDS[id];
+    const card = activeCase.cards[id];
     const root = entity.object3D;
     if (card == null || root == null || root.userData.printed === true) {
       return;
     }
+    entity.setValue(Evidence, 'label', card.title);
     let art: FaceArt | undefined;
     this.dress(
       entity,
@@ -94,10 +96,11 @@ export class CardFaceSystem extends createSystem({
   }
 
   private printSuspect(entity: Entity): void {
-    const suspect = SUSPECTS[entity.getValue(Suspect, 'suspectId') as string];
+    const suspect = activeCase.suspects[entity.getValue(Suspect, 'suspectId') as string];
     if (suspect == null) {
       return;
     }
+    entity.setValue(Suspect, 'name', suspect.name);
     const initials = suspect.name
       .split(' ')
       .map((word) => word[0])

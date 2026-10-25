@@ -12,7 +12,7 @@ import {
   Vector3,
 } from '@iwsdk/core';
 import { drawLabel } from './card-art.js';
-import { CARDS, LINKS } from './case01.js';
+import { activeCase } from './cases/index.js';
 import { Evidence } from './case-components.js';
 
 /** Back facing the eyes this much (cosine) counts as turned over. */
@@ -57,7 +57,7 @@ export class InspectionSystem extends createSystem({
     const labelGeometry = new PlaneGeometry(0.2, 0.05);
     this.threads = [];
     this.labels = [];
-    for (const link of LINKS) {
+    for (const link of activeCase.links) {
       const thread = new Mesh(threadGeometry, threadMaterial);
       thread.visible = false;
       this.world.createTransformEntity(thread);
@@ -81,14 +81,14 @@ export class InspectionSystem extends createSystem({
         this.examineHeld(entity, delta);
       }
     }
-    for (let index = 0; index < LINKS.length; index += 1) {
+    for (let index = 0; index < activeCase.links.length; index += 1) {
       this.updateLink(index);
     }
   }
 
   private examineHeld(entity: Entity, delta: number): void {
     const object = entity.object3D;
-    const card = CARDS[entity.getValue(Evidence, 'evidenceId') as string];
+    const card = activeCase.cards[entity.getValue(Evidence, 'evidenceId') as string];
     if (object == null || card == null) {
       return;
     }
@@ -117,7 +117,7 @@ export class InspectionSystem extends createSystem({
   }
 
   private updateLink(index: number): void {
-    const link = LINKS[index];
+    const link = activeCase.links[index];
     const a = this.findCard(link.a);
     const b = this.findCard(link.b);
     const aObject = a?.object3D;
@@ -127,7 +127,7 @@ export class InspectionSystem extends createSystem({
     }
     aObject.getWorldPosition(this.cardPos);
     bObject.getWorldPosition(this.otherPos);
-    // Both flags set means this pair was linked (each case-01 card has one link).
+    // Both flags set means this pair was linked (a card belongs to one link at most).
     let found =
       a.getValue(Evidence, 'linked') === true && b.getValue(Evidence, 'linked') === true;
     if (

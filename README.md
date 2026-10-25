@@ -9,11 +9,17 @@ did it, you put their photo in the box. One case takes about ten minutes.
 Quest Browser and enter mixed reality. Built for the Meta Horizon Start
 Developer Competition 2026 (Gaming, New Experience).
 
-## Case 01: The Empty Case
+## The cases
 
-A small private museum, 23:40. The night guard finds the jade hairpin's case
-open and empty, and the lock was not forced. Three people could have done it:
-the curator, the cleaner and an outside restorer.
+Each case is three suspects and seven pieces of evidence, and every case uses
+all three inspections at least once.
+
+- **Case 01, The Empty Case** (default): a jade hairpin gone from a locked
+  display case in a small private museum.
+- **Case 02, The Anonymous Letter** — add `?case=02` to the address: a typed
+  threat in a choir director's pigeonhole.
+- **Case 03, The Salted Sponge** — `?case=03`: the favourite's cake at a village
+  show tastes of salt.
 
 ## How to play
 
@@ -48,7 +54,10 @@ system) as a WebXR app.
   (`src/accusation-system.ts`).
 - **No downloads for the game itself.** The box and cards are built in code,
   and every card's printing is drawn at runtime on a canvas (`src/card-art.ts`).
-  The case text lives in one file (`src/case01.ts`).
+- **One file per case** (`src/cases/`). `npm run check:cases` checks every
+  case against the slots the scene provides: all three inspections present,
+  linked cards that do not start side by side, exactly one culprit, and text
+  that fits the tags.
 
 ```sh
 npm install
@@ -58,7 +67,7 @@ npm run build    # production build in dist/ (docs/ in this repository)
 
 ## Status
 
-Case 01 of a planned seven. Developed and tested in IWER, the IWSDK browser
+Cases 01–03 of a planned seven. Developed and tested in IWER, the IWSDK browser
 emulator (Meta Quest 3 profile, a furnished room with a round table); not yet
 tested on a headset.
 

@@ -13,7 +13,7 @@ import {
   Vector3,
 } from '@iwsdk/core';
 import { drawVerdict, VERDICT_SIZE } from './card-art.js';
-import { CARDS, LINKS, SUSPECTS } from './case01.js';
+import { activeCase } from './cases/index.js';
 import { Evidence, EvidenceBox, Suspect } from './case-components.js';
 
 // The inside of the tray, in the box's own space (origin at its bottom face).
@@ -109,7 +109,7 @@ export class AccusationSystem extends createSystem({
 
   private judge(entity: Entity, box: Entity, boxObject: Object3D): void {
     const object = entity.object3D;
-    const suspect = SUSPECTS[entity.getValue(Suspect, 'suspectId') as string];
+    const suspect = activeCase.suspects[entity.getValue(Suspect, 'suspectId') as string];
     if (
       object == null ||
       suspect == null ||
@@ -164,9 +164,9 @@ export class AccusationSystem extends createSystem({
 
   /** Clues a case hides: every flip or light card, and every link. */
   private cluesTotal(): number {
-    let total = LINKS.length;
-    for (const id in CARDS) {
-      if (CARDS[id].reveal !== 'none') {
+    let total = activeCase.links.length;
+    for (const id in activeCase.cards) {
+      if (activeCase.cards[id].reveal !== 'none') {
         total += 1;
       }
     }
@@ -183,7 +183,7 @@ export class AccusationSystem extends createSystem({
         found += 1;
       }
     }
-    for (const link of LINKS) {
+    for (const link of activeCase.links) {
       if (this.isLinked(link.a) && this.isLinked(link.b)) {
         found += 1;
       }

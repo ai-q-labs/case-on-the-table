@@ -1,4 +1,5 @@
-import { CASE_TITLE, type CardText, type SuspectText } from './case01.js';
+import { activeCase } from './cases/index.js';
+import type { CardText, SuspectText } from './cases/types.js';
 
 /**
  * Draws the printed side of evidence cards on 2D canvases. Runtime only (it
@@ -148,7 +149,7 @@ export function drawFace(id: string, card: CardText, accent: string): FaceArt {
   ctx.fillText(id, MARGIN, 53);
   ctx.font = `600 20px ${FONT}`;
   ctx.textAlign = 'right';
-  ctx.fillText(CASE_TITLE, width - MARGIN, 49);
+  ctx.fillText(activeCase.title, width - MARGIN, 49);
   ctx.textAlign = 'left';
 
   let y = 76 + 52;
@@ -177,7 +178,7 @@ export function drawFace(id: string, card: CardText, accent: string): FaceArt {
         hiddenX = MARGIN + ctx.measureText(`${row} `).width;
         hiddenY = y;
         ctx.fillStyle = FADED;
-        ctx.fillText('··:··', hiddenX, y);
+        ctx.fillText(card.ghostText ?? '··:··', hiddenX, y);
       }
       y += 37;
     }
@@ -197,12 +198,25 @@ export function drawFace(id: string, card: CardText, accent: string): FaceArt {
   return { canvas, hiddenX, hiddenY };
 }
 
-/** The words a 'light' card shows once held up, on a clear canvas. */
+/**
+ * The words a 'light' card shows once held up, on a clear canvas: they start
+ * where the faded line ends and wrap onto the rows below it.
+ */
 export function drawHidden(card: CardText, art: FaceArt): HTMLCanvasElement {
   const { canvas, ctx } = makeCanvas(FACE_SIZE.width, FACE_SIZE.height);
   ctx.fillStyle = '#3b1f4a';
   ctx.font = `800 31px ${FONT}`;
-  ctx.fillText(card.hiddenText ?? '', art.hiddenX, art.hiddenY);
+  const right = FACE_SIZE.width - MARGIN;
+  let x = art.hiddenX;
+  let y = art.hiddenY;
+  for (const word of (card.hiddenText ?? '').split(' ')) {
+    if (x > MARGIN && x + ctx.measureText(word).width > right) {
+      x = MARGIN;
+      y += 37;
+    }
+    ctx.fillText(word, x, y);
+    x += ctx.measureText(`${word} `).width;
+  }
   return canvas;
 }
 
@@ -215,7 +229,7 @@ export function drawBack(
   card: CardText,
   accent: string,
   big = id,
-  small = CASE_TITLE,
+  small = activeCase.title,
 ): HTMLCanvasElement {
   const { width, height } = BACK_SIZE;
   const { canvas, ctx } = makeCanvas(width, height);
