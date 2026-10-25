@@ -6,7 +6,7 @@
  * Card slots are fixed by the scene: BRIEF on top of the pile, E1–E7 in the
  * tray, S1–S3 (left to right) on the back rim. A case chooses which slot holds
  * what, and must link only slots that do not start next to each other
- * (`npm run check:cases` checks this and the rest of the shape).
+ * (at least 16 cm apart; `npm run check:cases` checks this and the rest of the shape).
  */
 
 /** How a card hides its clue until the player handles it. */

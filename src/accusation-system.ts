@@ -17,8 +17,8 @@ import { activeCase } from './cases/index.js';
 import { Evidence, EvidenceBox, Suspect } from './case-components.js';
 
 // The inside of the tray, in the box's own space (origin at its bottom face).
-const TRAY_HALF_WIDTH = 0.16;
-const TRAY_HALF_DEPTH = 0.105;
+const TRAY_HALF_WIDTH = 0.18;
+const TRAY_HALF_DEPTH = 0.12;
 const TRAY_TOP = 0.1;
 const VERDICT_RISE = 0.24;
 const GOLD = 0xc9a227;

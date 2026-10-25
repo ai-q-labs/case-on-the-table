@@ -22,8 +22,12 @@ const LIGHT_BELOW_EYES = 0.06;
 const LIGHT_REACH = 0.7;
 /** Seconds of holding it up before the faded print is fully readable. */
 const LIGHT_SECONDS = 0.6;
-/** Card centres closer than this, one of them in hand, count as brought together. */
-const LINK_DISTANCE = 0.1;
+/**
+ * Card centres closer than this, one of them in hand, count as brought
+ * together. Two 8.5 x 12 cm cards held side by side to compare them sit
+ * 10-13 cm apart, centre to centre.
+ */
+const LINK_DISTANCE = 0.13;
 const LABEL_RISE = 0.075;
 const GOLD = 0xc9a227;
 

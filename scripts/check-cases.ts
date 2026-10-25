@@ -25,8 +25,9 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const casesDir = process.argv[2] ?? join(root, 'src', 'cases');
 const EVIDENCE = ['E1', 'E2', 'E3', 'E4', 'E5', 'E6', 'E7'];
 const SUSPECTS = ['S1', 'S2', 'S3'];
-// Two cards closer than this at the start would link without being brought together.
-const MIN_LINK_START_DISTANCE = 0.12;
+// Two cards closer than this at the start would link without being brought
+// together: the link distance (0.13 m in inspection-system.ts) plus room.
+const MIN_LINK_START_DISTANCE = 0.16;
 // Longer text overflows the three-row tags over the box.
 const MAX_TAG_CHARS = 120;
 

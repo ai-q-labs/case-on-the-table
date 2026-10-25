@@ -4,8 +4,8 @@ import { fitOnTable, type Spot } from './table-fit.js';
 
 // Half the tray's footprint plus a little room, so it never hangs over the edge.
 const EDGE_ROOM = 0.015;
-const BOX_HALF_WIDTH = 0.17 + EDGE_ROOM;
-const BOX_HALF_DEPTH = 0.12 + EDGE_ROOM;
+const BOX_HALF_WIDTH = 0.2 + EDGE_ROOM;
+const BOX_HALF_DEPTH = 0.14 + EDGE_ROOM;
 // A table where the tray does not fit ranks behind every table where it does.
 const NO_FIT_PENALTY = 100;
 

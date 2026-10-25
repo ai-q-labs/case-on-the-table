@@ -8,8 +8,11 @@ import { BoxGeometry, Group, Mesh, MeshStandardMaterial } from '@iwsdk/core';
  * Origins sit at the bottom face, so a node's Y is its contact height.
  */
 
-const BOX_WIDTH = 0.34;
-const BOX_DEPTH = 0.24;
+// Wide and deep enough for two rows of cards (four in front, three behind)
+// with a few millimetres between every card, so each one can be picked up
+// without catching its neighbour.
+const BOX_WIDTH = 0.4;
+const BOX_DEPTH = 0.28;
 const BOX_WALL = 0.012;
 const BOX_HEIGHT = 0.05;
 

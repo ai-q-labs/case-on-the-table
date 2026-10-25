@@ -43,7 +43,7 @@
           },
           "components": {
             "ContactShadow": {
-              "size": [0.44, 0.32],
+              "size": [0.5, 0.36],
               "opacity": 0.35,
               "color": [0, 0, 0, 1],
               "height": 0.0005
@@ -54,7 +54,7 @@
           "id": "card-e1",
           "name": "Evidence E1",
           "content": { "type": "asset", "asset": "card-e1", "receiveShadow": true },
-          "transform": { "position": [-0.105, 0.0145, -0.04], "rotationDeg": [0, 5, 0] },
+          "transform": { "position": [-0.11, 0.0145, -0.064], "rotationDeg": [0, 3, 0] },
           "components": {
             "OneHandGrabbable": {},
             "Evidence": { "evidenceId": "E1", "label": "" }
@@ -64,7 +64,7 @@
           "id": "card-e2",
           "name": "Evidence E2",
           "content": { "type": "asset", "asset": "card-e2", "receiveShadow": true },
-          "transform": { "position": [0, 0.0145, -0.045], "rotationDeg": [0, -3, 0] },
+          "transform": { "position": [0, 0.0145, -0.064], "rotationDeg": [0, -2, 0] },
           "components": {
             "OneHandGrabbable": {},
             "Evidence": { "evidenceId": "E2", "label": "" }
@@ -74,7 +74,7 @@
           "id": "card-e3",
           "name": "Evidence E3",
           "content": { "type": "asset", "asset": "card-e3", "receiveShadow": true },
-          "transform": { "position": [0.105, 0.0145, -0.04], "rotationDeg": [0, 4, 0] },
+          "transform": { "position": [0.11, 0.0145, -0.064], "rotationDeg": [0, 2, 0] },
           "components": {
             "OneHandGrabbable": {},
             "Evidence": { "evidenceId": "E3", "label": "" }
@@ -84,7 +84,7 @@
           "id": "card-e4",
           "name": "Evidence E4",
           "content": { "type": "asset", "asset": "card-e4", "receiveShadow": true },
-          "transform": { "position": [-0.04, 0.0195, 0.05], "rotationDeg": [0, 3, 0] },
+          "transform": { "position": [-0.0465, 0.0145, 0.064], "rotationDeg": [0, 1.5, 0] },
           "components": {
             "OneHandGrabbable": {},
             "Evidence": { "evidenceId": "E4", "label": "" }
@@ -94,7 +94,7 @@
           "id": "card-e5",
           "name": "Evidence E5",
           "content": { "type": "asset", "asset": "card-e5", "receiveShadow": true },
-          "transform": { "position": [0.04, 0.0195, 0.045], "rotationDeg": [0, -2, 0] },
+          "transform": { "position": [0.0465, 0.0145, 0.064], "rotationDeg": [0, -1.5, 0] },
           "components": {
             "OneHandGrabbable": {},
             "Evidence": { "evidenceId": "E5", "label": "" }
@@ -104,7 +104,7 @@
           "id": "card-e6",
           "name": "Evidence E6",
           "content": { "type": "asset", "asset": "card-e6", "receiveShadow": true },
-          "transform": { "position": [-0.115, 0.0195, 0.045], "rotationDeg": [0, -6, 0] },
+          "transform": { "position": [-0.1395, 0.0145, 0.064], "rotationDeg": [0, -1.5, 0] },
           "components": {
             "OneHandGrabbable": {},
             "Evidence": { "evidenceId": "E6", "label": "" }
@@ -114,7 +114,7 @@
           "id": "card-e7",
           "name": "Evidence E7",
           "content": { "type": "asset", "asset": "card-e7", "receiveShadow": true },
-          "transform": { "position": [0.115, 0.0195, 0.05], "rotationDeg": [0, 6, 0] },
+          "transform": { "position": [0.1395, 0.0145, 0.064], "rotationDeg": [0, 1.5, 0] },
           "components": {
             "OneHandGrabbable": {},
             "Evidence": { "evidenceId": "E7", "label": "" }
@@ -134,7 +134,7 @@
           "id": "suspect-1",
           "name": "Suspect 1",
           "content": { "type": "asset", "asset": "card-suspect", "receiveShadow": true },
-          "transform": { "position": [-0.1, 0.108, -0.13], "rotationDeg": [75, 0, 0] },
+          "transform": { "position": [-0.11, 0.108, -0.15], "rotationDeg": [75, 0, 0] },
           "components": {
             "OneHandGrabbable": {},
             "Suspect": { "suspectId": "S1", "name": "" }
@@ -144,7 +144,7 @@
           "id": "suspect-2",
           "name": "Suspect 2",
           "content": { "type": "asset", "asset": "card-suspect", "receiveShadow": true },
-          "transform": { "position": [0, 0.108, -0.13], "rotationDeg": [75, 0, 0] },
+          "transform": { "position": [0, 0.108, -0.15], "rotationDeg": [75, 0, 0] },
           "components": {
             "OneHandGrabbable": {},
             "Suspect": { "suspectId": "S2", "name": "" }
@@ -154,7 +154,7 @@
           "id": "suspect-3",
           "name": "Suspect 3",
           "content": { "type": "asset", "asset": "card-suspect", "receiveShadow": true },
-          "transform": { "position": [0.1, 0.108, -0.13], "rotationDeg": [75, 0, 0] },
+          "transform": { "position": [0.11, 0.108, -0.15], "rotationDeg": [75, 0, 0] },
           "components": {
             "OneHandGrabbable": {},
             "Suspect": { "suspectId": "S3", "name": "" }

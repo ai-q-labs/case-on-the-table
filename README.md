@@ -20,14 +20,16 @@ all three inspections at least once.
   threat in a choir director's pigeonhole.
 - **Case 03, The Salted Sponge** — `?case=03`: the favourite's cake at a village
   show tastes of salt.
+- **Case 04, The Signed First Edition** — `?case=04`: a collector's prized
+  signature turns out to be a fake.
 
 ## How to play
 
 - **Read** the brief card on top of the pile first.
 - **Pick up** any card with a pinch. Everything stays within arm's reach.
 - **Turn it over**: some cards have something printed on the back.
-- **Hold it up to the light**: a faded thermal receipt shows its print when
-  raised to eye level.
+- **Hold it up to the light**: faded print, pressed-in writing or a watermark
+  shows when the card is raised to eye level.
 - **Bring two cards together**: when they belong together, a red thread
   joins them and says what they mean side by side.
 - **Accuse** by putting a suspect's photo in the box. A wrong guess tells you
@@ -67,7 +69,7 @@ npm run build    # production build in dist/ (docs/ in this repository)
 
 ## Status
 
-Cases 01–03 of a planned seven. Developed and tested in IWER, the IWSDK browser
+Cases 01–04 of a planned seven. Developed and tested in IWER, the IWSDK browser
 emulator (Meta Quest 3 profile, a furnished room with a round table); not yet
 tested on a headset.
 
