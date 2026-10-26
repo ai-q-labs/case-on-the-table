@@ -1,6 +1,7 @@
 /**
  * The detective notebook: which cases this browser has solved, and on which
- * days, kept in localStorage. Today's case comes from the local calendar day.
+ * days, kept in localStorage. Today's case comes from the local calendar day;
+ * the final case takes the table once every daily case is solved.
  * Plain functions with no IWSDK imports, so scripts/check-notebook.ts can test
  * them under Node.
  */
@@ -45,6 +46,22 @@ function keyOfDay(n: number): string {
 export function dailyCaseId(ids: string[], date: Date): string {
   const n = dayNumber(dayKey(date));
   return ids[((n % ids.length) + ids.length) % ids.length];
+}
+
+/** Daily cases not yet solved: the final case opens at 0. */
+export function dailyLeft(notebook: Notebook, dailyIds: string[]): number {
+  return dailyIds.length - solvedCount(notebook, dailyIds);
+}
+
+/**
+ * The case on the table when none is asked for: the final case once every
+ * daily case is solved and it is not yet, otherwise today's daily case.
+ */
+export function caseForToday(dailyIds: string[], finalId: string, notebook: Notebook, date: Date): string {
+  if (dailyLeft(notebook, dailyIds) === 0 && notebook.solved[finalId] == null) {
+    return finalId;
+  }
+  return dailyCaseId(dailyIds, date);
 }
 
 /** Days in a row with a solve, ending today, or yesterday while today is still open. */

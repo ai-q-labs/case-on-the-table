@@ -13,6 +13,8 @@ export const EvidenceBox = createComponent('EvidenceBox', {
   notebookSolved: { type: Types.Int8, default: 0 },
   /** Days in a row with a solve, from the notebook. */
   streakDays: { type: Types.Int16, default: 0 },
+  /** Daily cases still unsolved; the final case opens at 0. */
+  dailyLeft: { type: Types.Int8, default: 0 },
 });
 
 /** One piece of evidence the player can pick up. */

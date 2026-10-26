@@ -8,10 +8,10 @@ import {
   SRGBColorSpace,
 } from '@iwsdk/core';
 import { drawBack, drawFace, drawHidden, drawSuspect, type FaceArt } from './card-art.js';
-import { activeCase, CASES } from './cases/index.js';
+import { activeCase, CASES, DAILY_IDS, FINAL_CASE } from './cases/index.js';
 import type { CardText } from './cases/types.js';
 import { Evidence, Suspect } from './case-components.js';
-import { browserStorage, dayKey, loadNotebook, solvedCount, streak } from './notebook.js';
+import { browserStorage, dailyLeft, dayKey, loadNotebook, solvedCount, streak } from './notebook.js';
 import {
   CARD_DEPTH,
   CARD_FACE_SCALE_X,
@@ -32,14 +32,26 @@ function withNotebook(card: CardText): CardText {
   const notebook = loadNotebook(browserStorage());
   const ids = CASES.map((file) => file.id);
   const days = streak(notebook.days, dayKey(new Date()));
+  const left = dailyLeft(notebook, DAILY_IDS);
+  let final = 'Final case: solved';
+  if (left > 0) {
+    final = `Final case: ${left} more to open`;
+  } else if (notebook.solved[FINAL_CASE.id] == null) {
+    final = 'Final case: open now';
+  }
   return {
     ...card,
-    hint: card.hint ?? 'Your detective notebook is on the back.',
+    hint:
+      card.hint ??
+      (activeCase === FINAL_CASE
+        ? 'The final case. Your notebook is on the back.'
+        : 'Your detective notebook is on the back.'),
     back: [
       'NOTEBOOK',
       `Solved ${solvedCount(notebook, ids)} of ${ids.length}`,
-      ids.map((id) => `${id} ${notebook.solved[id] != null ? '✓' : '·'}`).join('   '),
+      ids.map((id) => `${id} ${notebook.solved[id] != null ? '✓' : '·'}`).join('  '),
       `Streak: ${days} ${days === 1 ? 'day' : 'days'}`,
+      final,
     ],
   };
 }
@@ -56,7 +68,8 @@ function canvasTexture(canvas: HTMLCanvasElement): CanvasTexture {
  * back under the coloured backing, and for a 'light' card a clear layer
  * holding the faded words (InspectionSystem fades it in). Suspect photo cards
  * get a portrait face and their initials on the back. The brief's back is the
- * detective notebook: cases solved in this browser and the streak of days.
+ * detective notebook: cases solved in this browser, the streak of days and how
+ * many daily cases are left before the final case opens.
  *
  * Leaves on the card's object3D.userData:
  * - `rim`: the card's own backing material, which glows once a clue is found

@@ -12,9 +12,10 @@ Developer Competition 2026 (Gaming, New Experience).
 ## The cases
 
 Each case is three suspects and seven pieces of evidence, and every case uses
-all three inspections at least once. The table shows today's case: the seven
-take turns, one a day by your local date. Add `?case=01` to `?case=07` to the
-address to play a particular one.
+all three inspections at least once. The table shows today's case: cases 01 to
+06 take turns, one a day by your local date. Solve all six and case 07, the
+final case, takes the table until you solve it. Add `?case=01` to `?case=07`
+to the address to play a particular one at any time.
 
 - **Case 01, The Empty Case** — `?case=01`: a jade hairpin gone from a locked
   display case in a small private museum.
@@ -28,8 +29,8 @@ address to play a particular one.
   has become a cheap copy overnight.
 - **Case 06, The Prize Call** — `?case=06`: a radio phone-in quiz is won with
   the host's own answers, mistake and all.
-- **Case 07, The Unopened Safe** — `?case=07`: a hotel guest's necklace is
-  stolen from a safe that nobody opened.
+- **Case 07, The Unopened Safe** (the final case) — `?case=07`: a hotel
+  guest's necklace is stolen from a safe that nobody opened.
 
 ## How to play
 
@@ -47,8 +48,9 @@ address to play a particular one.
 Cards whose secret you have found keep a gold edge.
 
 **Your detective notebook** is on the back of the brief card: which of the
-seven cases you have solved, and your streak of days in a row with a solve.
-Solving a case adds it to the notebook and shows both on the verdict.
+seven cases you have solved, your streak of days in a row with a solve, and
+how many daily cases are left before the final case opens. Solving a case adds
+it to the notebook and shows it on the verdict.
 
 ## How it works
 
@@ -75,8 +77,9 @@ system) as a WebXR app.
 - **Today's case and the notebook** (`src/notebook.ts`). The day's case comes
   from the local calendar date; solved cases and the days you solved on are
   kept in the browser's local storage, and the box carries the counts as ECS
-  state. `npm run check:notebook` checks the date rotation, the streak and
-  saving, including when storage is blocked.
+  state. `npm run check:notebook` checks the date rotation, when the final
+  case opens and closes, the streak and saving, including when storage is
+  blocked.
 
 ```sh
 npm install

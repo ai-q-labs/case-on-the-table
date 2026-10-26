@@ -13,10 +13,11 @@ import {
   Vector3,
 } from '@iwsdk/core';
 import { drawVerdict, VERDICT_SIZE } from './card-art.js';
-import { activeCase, CASES } from './cases/index.js';
+import { activeCase, CASES, DAILY_IDS, FINAL_CASE } from './cases/index.js';
 import { Evidence, EvidenceBox, Suspect } from './case-components.js';
 import {
   browserStorage,
+  dailyLeft,
   dayKey,
   loadNotebook,
   type Notebook,
@@ -164,12 +165,15 @@ export class AccusationSystem extends createSystem({
         wrong,
       });
       saveNotebook(browserStorage(), this.notebook);
-      const [solvedCases, days] = this.writeNotebookTo(box);
+      const [solvedCases, days, left] = this.writeNotebookTo(box);
+      const finalJustOpened = left === 0 && this.notebook.solved[FINAL_CASE.id] == null;
       this.show(
         suspect.verdict,
         `Clues found ${clues} of ${total}  ·  Wrong guesses ${wrong}`,
         true,
-        `Notebook ${solvedCases} of ${CASES.length} cases  ·  Streak ${days} ${days === 1 ? 'day' : 'days'}`,
+        finalJustOpened
+          ? `Notebook ${solvedCases} of ${CASES.length} cases  ·  The final case is open`
+          : `Notebook ${solvedCases} of ${CASES.length} cases  ·  Streak ${days} ${days === 1 ? 'day' : 'days'}`,
       );
       const rim = object.userData.rim as MeshStandardMaterial | undefined;
       rim?.emissive.setHex(GOLD);
@@ -195,16 +199,18 @@ export class AccusationSystem extends createSystem({
     this.verdict.visible = true;
   }
 
-  /** Puts the notebook's numbers on the box; returns [cases solved, streak in days]. */
-  private writeNotebookTo(box: Entity): [number, number] {
+  /** Puts the notebook's numbers on the box; returns [cases solved, streak in days, daily cases left]. */
+  private writeNotebookTo(box: Entity): [number, number, number] {
     const solvedCases = solvedCount(
       this.notebook,
       CASES.map((file) => file.id),
     );
     const days = streak(this.notebook.days, dayKey(new Date()));
+    const left = dailyLeft(this.notebook, DAILY_IDS);
     box.setValue(EvidenceBox, 'notebookSolved', solvedCases);
     box.setValue(EvidenceBox, 'streakDays', days);
-    return [solvedCases, days];
+    box.setValue(EvidenceBox, 'dailyLeft', left);
+    return [solvedCases, days, left];
   }
 
   /** Clues a case hides: every flip or light card, and every link. */

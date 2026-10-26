@@ -2,7 +2,9 @@
 // when storage works, is empty, holds junk or is blocked.
 // Run: npm run check:notebook   (exit 1 on any failed check)
 import {
+  caseForToday,
   dailyCaseId,
+  dailyLeft,
   dayKey,
   emptyNotebook,
   loadNotebook,
@@ -43,6 +45,29 @@ for (const [y, m, d] of [
   check(`${y}-${m + 1}-${d} to the next day moves on by one`, IDS.indexOf(b) === (IDS.indexOf(a) + 1) % 7, `${a} -> ${b}`);
 }
 check('dayKey pads month and day', dayKey(new Date(2026, 0, 5, 9)) === '2026-01-05', dayKey(new Date(2026, 0, 5, 9)));
+
+// The final case: 07 opens once 01-06 are all solved, until it is solved too.
+const DAILY = ['01', '02', '03', '04', '05', '06'];
+const sixDays = Array.from({ length: 6 }, (_, i) => dailyCaseId(DAILY, new Date(2026, 10, 1 + i, 12)));
+check('six days give the six daily cases', new Set(sixDays).size === 6 && !sixDays.includes('07'), sixDays.join(','));
+const solve = (book: ReturnType<typeof emptyNotebook>, ids: string[]) =>
+  ids.reduce((b, id) => recordSolve(b, id, { date: '2026-10-26', clues: 4, total: 4, wrong: 0 }), book);
+const someDay = new Date(2026, 10, 3, 12);
+check('empty notebook: today\'s daily case', caseForToday(DAILY, '07', emptyNotebook(), someDay) === dailyCaseId(DAILY, someDay));
+check('empty notebook: 6 daily cases left', dailyLeft(emptyNotebook(), DAILY) === 6);
+const fiveDone = solve(emptyNotebook(), ['01', '02', '03', '04', '05']);
+check('five of six solved: 1 left', dailyLeft(fiveDone, DAILY) === 1);
+check('five of six solved: still the daily case', caseForToday(DAILY, '07', fiveDone, someDay) !== '07');
+const finalOnly = solve(emptyNotebook(), ['07']);
+check('final solved early by address: the daily case', caseForToday(DAILY, '07', finalOnly, someDay) !== '07');
+const sixDone = solve(fiveDone, ['06']);
+check('all six solved: 0 left', dailyLeft(sixDone, DAILY) === 0);
+for (let i = 0; i < 7; i += 1) {
+  const day = new Date(2026, 10, 1 + i, 12);
+  check(`all six solved: the final case on day ${i + 1}`, caseForToday(DAILY, '07', sixDone, day) === '07');
+}
+const allDone = solve(sixDone, ['07']);
+check('final solved too: back to the daily case', caseForToday(DAILY, '07', allDone, someDay) === dailyCaseId(DAILY, someDay));
 
 // The streak.
 check('no days: streak 0', streak([], '2026-10-26') === 0);
